@@ -1,0 +1,26 @@
+{
+  "name": "airbnb-ssr",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "element-plus": "^2.1.9",
+    "vue": "^3.2.25",
+    "vue-i18n": "^9.2.0-beta.35",
+    "vue-router": "^4.0.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.0",
+    "sass": "^1.50.0",
+    "typescript": "^4.5.4",
+    "unplugin-auto-import": "^0.7.1",
+    "unplugin-vue-components": "^0.19.2",
+    "vite": "^2.9.0",
+    "vue-tsc": "^0.29.8"
+  }
+}
