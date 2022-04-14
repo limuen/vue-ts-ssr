@@ -2,6 +2,7 @@
 import { getCurrentInstance } from 'vue';
 import { useI18n } from 'vue-i18n';
 import IndexedDB from '@/utils/indexedDB';
+import { fetchElephant } from '@/api';
 const { t } = useI18n();
 const app = getCurrentInstance();
 const open2 = () => {
@@ -14,38 +15,46 @@ const open2 = () => {
 /**
  * 数据库相关操作
  */
-const airbnbDB = new IndexedDB('airbnb');
-airbnbDB.openStore('elephant', 'id', ['nose', 'ear']);
+// const airbnbDB = new IndexedDB('airbnb');
+// airbnbDB.openStore('elephant', 'id', ['nose', 'ear']);
 /**
  * 赠和修改
  */
-const handleCreate = () => {
-  airbnbDB.updateItem('elephant', {
-    // id: 1,
-    nose: '44米',
-    ear: '比较小',
-  });
-};
+// const handleCreate = () => {
+//   airbnbDB.updateItem('elephant', {
+//     // id: 1,
+//     nose: '44米',
+//     ear: '比较小',
+//   });
+// };
 /**
  * 删除
  */
-const handleDelete = (keyPath: number | string) => {
-  airbnbDB.deleteItem('elephant', keyPath);
-};
+// const handleDelete = (keyPath: number | string) => {
+//   airbnbDB.deleteItem('elephant', keyPath);
+// };
 /**
  * 查询所有数据
  */
-const getObjectStore = () => {
-  airbnbDB.getList('elephant');
-};
+// const getObjectStore = () => {
+//   airbnbDB.getList('elephant');
+// };
 
 /**
  * 查询某一条数据
  */
-const item = (keyPath: number | string) => {
-  airbnbDB.getItem('elephant', keyPath);
-};
+// const item = (keyPath: number | string) => {
+//   airbnbDB.getItem('elephant', keyPath);
+// };
 const value1 = '';
+
+function getElephant() {
+  fetchElephant().then((res) => {
+    console.log(res, '获取参数');
+  });
+}
+
+getElephant();
 </script>
 
 <template>
@@ -56,10 +65,10 @@ const value1 = '';
     type="date"
     :placeholder="t('message.date')"
   />
-  <el-button @click="handleCreate">新增</el-button>
+  <!-- <el-button @click="handleCreate">新增</el-button>
   <el-button @click="handleDelete(2)">删除</el-button>
   <el-button @click="getObjectStore">查询</el-button>
-  <el-button @click="item(3)">查询某一条数据</el-button>
+  <el-button @click="item(3)">查询某一条数据</el-button> -->
 </template>
 
 <style lang="scss" scoped>
