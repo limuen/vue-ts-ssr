@@ -48,13 +48,13 @@ const open2 = () => {
 // };
 const value1 = '';
 
-function getElephant() {
-  fetchElephant().then((res) => {
-    console.log(res, '获取参数');
-  });
-}
+// function getElephant() {
+//   fetchElephant().then((res) => {
+//     console.log(res, '获取参数');
+//   });
+// }
 
-getElephant();
+// getElephant();
 </script>
 
 <template>

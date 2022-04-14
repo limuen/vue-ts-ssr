@@ -1,23 +1,20 @@
 import { request } from '@/utils/request';
-import IndexedDB from '@/utils/indexedDB';
-export function getRoomList() {
-  return request.httpRequestGet('api/12321/12312', {});
-}
+import airbnb from '@/db';
 
-/**
- * mock
- */
-const airbnbDB = new IndexedDB('airbnb');
+// 真实接口
+export function fetchRoomList() {
+  return request.httpRequestGet(
+    'https://service-ase3oocp-1302839645.sh.apigw.tencentcs.com/api/room/room/getRoomList?pageNo=1&pageSize=3',
+    {}
+  );
+}
+// Mock接口
 export async function fetchElephant() {
-  await airbnbDB.openStore('elephant', 'id', ['nose', 'ear']);
-  let result = await airbnbDB.getList('elephant').then((res) => {
-    return {
-      code: '000000',
-      message: '获取成功',
-      result: res,
-      success: true,
-    };
+  await airbnb.airbnbDB.openStore({
+    elephant: { keyPath: 'id', indexs: ['nose', 'ear'] },
   });
-  console.log('result----------->', result);
+  const result = await airbnb.airbnbDB.getList('elephant').then((res) => {
+    return { code: '000000', message: '操作成功', result: res, success: true };
+  });
   return result;
 }

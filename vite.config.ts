@@ -28,7 +28,8 @@ export default defineConfig({
        * 使用scss
        */
       scss: {
-        additionalData: `@import "@/assets/scss/variable.scss";`,
+        additionalData:
+          '@import "@/assets/scss/variable.scss";@import "@/assets/scss/main.scss";',
       },
     },
   },
