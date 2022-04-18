@@ -1,30 +1,93 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-
+import { ref, reactive, getCurrentInstance } from 'vue';
 import { useRouter } from 'vue-router';
-import useFormProperties from '@/composables/login/useFormProperties';
-import useFormOperates from '@/composables/login/useFormOperates';
+import { useI18n } from 'vue-i18n';
+import { userSignApi, userLogoutApi } from '@/api/login';
+import { IResultOr } from '@/api/interface';
+interface IRuleForm {
+  mobile: string;
+  password: string;
+}
 
-const router = useRouter();
 const { t } = useI18n();
-const { ruleForm, loginText, ruleFormRef, activeName, rules } =
-  useFormProperties(t);
-const { userSign, userLogin } = useFormOperates(router, ruleForm);
+const router = useRouter();
+const app = getCurrentInstance();
+
+const activeName = ref('login');
+const loginText = ref(t('login.loginBtn'));
+const ruleFormRef = ref();
+const ruleForm: IRuleForm = reactive({
+  mobile: '',
+  password: '',
+});
+const rules = reactive({
+  mobile: [
+    {
+      required: true,
+      min: 11,
+      max: 11,
+      message: t('login.placeMobile'),
+      trigger: 'blur',
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: t('login.placePass'),
+      trigger: 'blur',
+    },
+  ],
+});
 function handleClick(e: any) {
-  const { name } = e.props;
-  loginText.value = t(`login['${name}Btn']`);
+  console.log(e);
+  const { name, label } = e.props;
+  if (name === 'login') {
+    loginText.value = t('login.loginBtn');
+  } else if (name === 'sign') {
+    loginText.value = t('login.signBtn');
+  }
+  console.log(name, label);
 }
 
 function submitForm() {
   ruleFormRef.value.validate((valid: any) => {
     if (valid) {
-      if (activeName.value === 'sign') {
-        // userSign();
-      } else if (activeName.value === 'login') {
-        // userLogin();
+      if (activeName.value == 'sign') {
+        userSign(ruleForm);
+      } else {
+        userLogin(ruleForm);
       }
     } else {
       return false;
+    }
+  });
+}
+
+/**
+ * 注册
+ */
+function userSign(params: IRuleForm) {
+  userLogoutApi(params).then((res: IResultOr) => {
+    const { success, message } = res;
+    if (success) {
+      app?.appContext.config.globalProperties.$message.success(message);
+    } else {
+      app?.appContext.config.globalProperties.$message.error(message);
+    }
+  });
+}
+
+/**
+ * 登陆
+ */
+function userLogin(params: IRuleForm) {
+  userSignApi(params).then((res: IResultOr) => {
+    const { success, message } = res;
+    if (success) {
+      router.push({ name: 'home' });
+      app?.appContext.config.globalProperties.$message.success(message);
+    } else {
+      app?.appContext.config.globalProperties.$message.error(message);
     }
   });
 }

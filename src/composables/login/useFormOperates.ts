@@ -11,27 +11,29 @@ interface Result {
   userLogin: (params: IRuleForm) => void;
 }
 
+const app = getCurrentInstance();
+
 export default function useFormOperates(
   router: Router,
   params: IRuleForm
 ): Result {
-  // 注册接口
+  /**
+   * 注册
+   */
   function userSign(): void {
     userSignApi(params).then((res: IResultOr) => {
       const { success, message } = res;
       if (success) {
-        getCurrentInstance()?.appContext.config.globalProperties.$message.success(
-          message
-        );
+        app?.appContext.config.globalProperties.$message.success(message);
       } else {
-        getCurrentInstance()?.appContext.config.globalProperties.$message.error(
-          message
-        );
+        app?.appContext.config.globalProperties.$message.error(message);
       }
     });
   }
 
-  // 登录接口
+  /**
+   * 登陆
+   */
   function userLogin(): void {
     userLoginApi(params).then((res: IResultOr) => {
       const { success, message, result } = res;
@@ -39,13 +41,9 @@ export default function useFormOperates(
         const { status } = result;
         localStorage.setItem('userStatus', status);
         router.push({ name: 'home' });
-        getCurrentInstance()?.appContext.config.globalProperties.$message.success(
-          message
-        );
+        app?.appContext.config.globalProperties.$message.success(message);
       } else {
-        getCurrentInstance()?.appContext.config.globalProperties.$message.error(
-          message
-        );
+        app?.appContext.config.globalProperties.$message.error(message);
       }
     });
   }

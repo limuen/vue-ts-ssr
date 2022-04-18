@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { ref, getCurrentInstance } from 'vue';
+import { ref } from 'vue';
 import zhCn from 'element-plus/lib/locale/lang/zh-cn';
 import en from 'element-plus/lib/locale/lang/en';
-import { saveLanguageApi, fetchLanguageApi } from '@/api/layout';
+import { saveLanguageApi, fetchLanguageApi } from '../../api/layout';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import { userLogoutApi } from '@/api/login';
-import { IResultOr } from '@/api/interface';
 
 const { t } = useI18n();
 const router = useRouter();
-const { proxy }: any = getCurrentInstance();
+
 const activeIndex = ref('orders');
 
 /* eslint-disable */
@@ -27,8 +25,6 @@ function handleSelect(e: any) {
     saveLanguage('en');
   } else if (e === 'login') {
     router.push({ name: 'login' });
-  } else if (e === 'logout') {
-    userLogout();
   }
   console.log(e);
 }
@@ -59,21 +55,6 @@ function getLanguage() {
   });
 }
 // getLanguage()
-
-const userStatus = localStorage.getItem('userStatus');
-// 登出接口
-function userLogout() {
-  userLogoutApi().then((res: IResultOr) => {
-    const { success, message } = res;
-    if (success) {
-      proxy.$message.success(message);
-      router.push({ name: 'login' });
-      localStorage.setItem('userStatus', '0');
-    } else {
-      proxy.$message.error(message);
-    }
-  });
-}
 </script>
 
 <template>
@@ -92,17 +73,14 @@ function userLogout() {
         <el-menu-item index="zh">中文</el-menu-item>
         <el-menu-item index="en">English</el-menu-item>
       </el-sub-menu>
-      <el-sub-menu index="avatar" v-if="userStatus === '1'">
-        <template #title>
-          <img
-            class="avatar"
-            src="../../assets/images/layout/avatar.jpeg"
-            alt="个人中心"
-          />
-        </template>
-        <el-menu-item index="logout">退出</el-menu-item>
-      </el-sub-menu>
-      <el-menu-item index="login" v-else
+      <el-menu-item index="avatar">
+        <img
+          class="avatar"
+          src="../../assets/images/layout/avatar.jpeg"
+          alt="个人中心"
+        />
+      </el-menu-item>
+      <el-menu-item index="login"
         >{{ t('login.loginTab') }}/{{ t('login.signTab') }}</el-menu-item
       >
     </el-menu>

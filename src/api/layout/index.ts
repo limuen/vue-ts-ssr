@@ -2,7 +2,7 @@
 // code: '000003'表示'手机号不正确'；code: '000004'表示'其他异常'；code: '000005'表示'登录过期'；
 import { ElLoading } from 'element-plus';
 import { IResultOr } from '../interface';
-import airbnb from '@/db'; // 引入数据库和对象仓库
+import airbnb from '../../db'; // 引入数据库和对象仓库
 
 const storeName = Object.keys(airbnb.languageObjectStore)[0];
 
